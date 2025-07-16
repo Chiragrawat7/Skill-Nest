@@ -1,11 +1,11 @@
 const mongoose = require("mongoose");
 
-const courceSchema = new mongoose.Schema({
-  courceName: {
+const courseSchema = new mongoose.Schema({
+  courseName: {
     type: String,
     required: true,
   },
-  courceDescription: {
+  courseDescription: {
     type: String,
     trim: true,
     required: true,
@@ -19,7 +19,7 @@ const courceSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  courceContent: [
+  courseContent: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Section",
@@ -57,4 +57,4 @@ const courceSchema = new mongoose.Schema({
     enum: ["Draft", "Published"],
   },
 });
-module.exports = mongoose.model("Cource", courceSchema);
+module.exports = mongoose.model("course", courseSchema);

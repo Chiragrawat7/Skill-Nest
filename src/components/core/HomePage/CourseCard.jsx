@@ -1,6 +1,6 @@
 import React from 'react'
 
-const CourceCard = ({cardData,currentCard,setcurrentCard}) => {
+const courseCard = ({cardData,currentCard,setcurrentCard}) => {
   function clickHandler(cardData){
     setcurrentCard(cardData.heading)
   }
@@ -20,4 +20,4 @@ const CourceCard = ({cardData,currentCard,setcurrentCard}) => {
   )
 }
 
-export default CourceCard
+export default courseCard

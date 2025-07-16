@@ -1,6 +1,6 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import RenderCartCources from './RenderCartCources'
+import RenderCartcourses from './RenderCartcourses'
 import RenderTotalAmount from './RenderTotalAmount'
 
 const index = () => {
@@ -10,11 +10,11 @@ const index = () => {
   return (
     <div>
         <h2>Your Cart</h2>
-        <p>{totalItems} Cources in Cart</p>
+        <p>{totalItems} courses in Cart</p>
         {
             total>0?(
                 <div>
-                    <RenderCartCources/>
+                    <RenderCartcourses/>
                     <RenderTotalAmount/>
                 </div>
             ):(

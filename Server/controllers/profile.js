@@ -1,5 +1,5 @@
 const { uploadImageToCloudinary } = require("../utils/imageUploader");
-const Cource = require("../models/Cource");
+const course = require("../models/course");
 const Profile=require("../models/Profile");
 const User= require("../models/User")
 
@@ -63,7 +63,7 @@ exports.deleteAccount=async (req,res) => {
         }
 
         // TODO: also delete from student details
-        const result=await Cource.updateMany({studentsEnrolled:id},
+        const result=await course.updateMany({studentsEnrolled:id},
             {
                 $pull:{
                     studentsEnrolled:id
@@ -140,7 +140,7 @@ exports.getEnrolledCourses =async (req,res) => {
         const userId=req.user.id;
         const userDetails=await User.findOne({
             _id:userId
-        }).populate("cources").exec();
+        }).populate("courses").exec();
         if(!userDetails){
             return res.status(200).json({
                 success:false,
@@ -149,7 +149,7 @@ exports.getEnrolledCourses =async (req,res) => {
         }
         return res.status(200).json({
             success: true,
-            data: userDetails.cources,
+            data: userDetails.courses,
           })
     } catch (error) {
         return res.status(500).json({

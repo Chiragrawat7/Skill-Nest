@@ -1,13 +1,13 @@
 const Section=require('../models/Section');
-const Cource=require('../models/Cource')
+const course=require('../models/course')
 
 exports.createSection=async (req,res) => {
     try {
         // data fetch
-        const {sectionName,courceId}=req.body;
+        const {sectionName,courseId}=req.body;
 
         // data validation
-        if(!sectionName || !courceId){
+        if(!sectionName || !courseId){
             return res.status(402).json({
                 success:false,
                 message:"all fields are required"
@@ -16,16 +16,16 @@ exports.createSection=async (req,res) => {
         // create section
         const newSection=await Section.create({sectionName})
 
-        // update in the cource
-        const updatedCourceDetails=await Cource.findByIdAndUpdate(courceId,
+        // update in the course
+        const updatedcourseDetails=await course.findByIdAndUpdate(courseId,
             {
                 $push:{
-                    courceContent:newSection._id,
+                    courseContent:newSection._id,
                 }
             },
             {new :true}
         ).populate({
-            path:'courceContent',
+            path:'courseContent',
             populate:{
                 path:"subSections"
             }
@@ -34,7 +34,7 @@ exports.createSection=async (req,res) => {
         // return succesfull response 
         return res.status(200).json({
             success:true,
-            updatedCourceDetails,
+            updatedcourseDetails,
             message:"section created successfully"
         })
     } catch (error) {
@@ -92,8 +92,8 @@ exports.deleteSection=async (req,res) => {
 
         // find by id and delete
         const deletedSection=await Section.findByIdAndDelete(sectionId)
-        // cource me bhi update karege
-        // const deletedSectionCource=await Cource.fin 
+        // course me bhi update karege
+        // const deletedSectioncourse=await course.fin 
         return res.status(200).json({
             success:true,
             message:"section deleted successdfully"

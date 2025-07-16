@@ -39,20 +39,20 @@ const userSchema = new mongoose.Schema(
       ref: "Profile",
       required: true,
     },
-    cources: [
+    courses: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Cource",
+        ref: "course",
       },
     ],
     image: {
       type: String,
       required: true,
     },
-    courceProgress: [
+    courseProgress: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "CourceProgress",
+        ref: "courseProgress",
       },
     ],
     token: {

@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const Cource = require("./Cource");
+const course = require("./course");
 
 const categorySchema = new mongoose.Schema({
   name: {
@@ -9,10 +9,10 @@ const categorySchema = new mongoose.Schema({
   description: {
     type: String,
   },
-  cources: [
+  courses: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Cource",
+      ref: "course",
     },
   ],
 });

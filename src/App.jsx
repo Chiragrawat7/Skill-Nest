@@ -15,13 +15,17 @@ import Dashboard from "./pages/Dashboard";
 import PrivateRoute from "./components/core/auth/PrivateRoute";
 import Error from "./pages/Error";
 import Contact from "./pages/Contact";
-import EnrolledCources from "./components/core/dashboardPage/EnrolledCources";
+import Enrolledcourses from "./components/core/dashboardPage/EnrolledCources";
 import Cart from "./components/core/Cart";
 import { ACCOUNT_TYPE } from "./utils/constants";
 import { useSelector } from "react-redux";
 import Settings from "./components/core/dashboardPage/Settings/Settings";
+import Addcourse from './components/core/dashboardPage/AddCource/index'
+
+
+
 const App = () => {
-  const {user}=useSelector((state)=>state.profile)
+  const { user } = useSelector((state) => state.profile);
   return (
     <div className="w-screen min-h-screen bg-richblack-900 flex flex-col font-inter">
       <Navbar />
@@ -84,18 +88,25 @@ const App = () => {
               </PrivateRoute>
             }
           />
-          <Route
-            path="dashboard/settings"
-            element={<Settings/>}
-          />
+          <Route path="dashboard/settings" element={<Settings />} />
+          {
+          user?.accountType === ACCOUNT_TYPE.STUDENT && (
+            <>
+              <Route
+                path="/dashboard/enrolled-courses"
+                element={<Enrolledcourses />}
+              />
+              <Route path="/dashboard/cart" element={<Cart />} />
+            </>
+          )}
+
            {
-            user?.accountType===ACCOUNT_TYPE.STUDENT&&(
-              <>
-              <Route path="/dashboard/enrolled-courses" element={<EnrolledCources/>}/>
-          <Route path="/dashboard/cart" element={<Cart/>}/>
-              </>
-            )
-          }
+           user?.accountType === ACCOUNT_TYPE.INSTRUCTOR && (
+            <>
+              <Route path="/dashboard/add-course" element={<Addcourse/>}/>
+            </>
+          )}
+
           
         </Route>
         <Route path="/contact" element={<Contact />} />

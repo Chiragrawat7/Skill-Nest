@@ -9,7 +9,7 @@ const stats = [
   },
   {
     count: "200+",
-    lable: "Cources",
+    lable: "courses",
   },{
     count: "50+",
     lable: "Awards",

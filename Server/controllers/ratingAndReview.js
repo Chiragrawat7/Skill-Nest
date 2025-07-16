@@ -1,29 +1,29 @@
 const RatingAndReview = require("../models/RatinAndReview");
-const Cource = require("../models/Cource");
+const course = require("../models/course");
 const { default: mongoose } = require("mongoose");
 
 // create rating
 exports.createRating = async (req, res) => {
   try {
     // get data
-    const { courceId, rating, review } = req.body;
+    const { courseId, rating, review } = req.body;
     const userId = req.user.id;
-    // check user is enrolled in cource or not
-    const userEnrolled = await Cource.findOne({
-      _id: courceId,
+    // check user is enrolled in course or not
+    const userEnrolled = await course.findOne({
+      _id: courseId,
       studentsEnrolled: { $elementMatch: { $eq: userId } },
     });
     if (!userEnrolled) {
       return res.staus(401).json({
         success: false,
-        message: "Student is not enrolled in this cource",
+        message: "Student is not enrolled in this course",
       });
     }
 
-    // check if already reviewed the cource
+    // check if already reviewed the course
     const reviewExist = await RatingAndReview.findOne({
       user: userId,
-      cource: courceId,
+      course: courseId,
     });
     if (reviewExist) {
       return res.staus(403).json({
@@ -37,12 +37,12 @@ exports.createRating = async (req, res) => {
       user: userId,
       rating,
       review,
-      cource: courceId,
+      course: courseId,
     });
 
-    // cource model me update karo
-    const updatedCource = await Cource.findByIdAndUpdate(
-      courceId,
+    // course model me update karo
+    const updatedcourse = await course.findByIdAndUpdate(
+      courseId,
       {
         $push: {
           ratingAndReviews: ratingAndReview._id,
@@ -52,7 +52,7 @@ exports.createRating = async (req, res) => {
         new: true,
       }
     );
-    console.log(updatedCource);
+    console.log(updatedcourse);
     // return response
     return res.staus(200).json({
       success: true,
@@ -70,14 +70,14 @@ exports.createRating = async (req, res) => {
 // get avg rating
 exports.getAvgRating = async (req, res) => {
   try {
-    // get cource id
-    const { courceId } = req.body;
+    // get course id
+    const { courseId } = req.body;
     // calculate avg rating
     const result = await RatingAndReview.aggregate([
       {
         $match: {
-          // cource id ko  string se object me convert krne ke liye
-          cource: new mongoose.Types.ObjectId(courceId),
+          // course id ko  string se object me convert krne ke liye
+          course: new mongoose.Types.ObjectId(courseId),
         },
       },
       {
@@ -123,8 +123,8 @@ exports.getAllRating = async (req, res) => {
       })
 
       .populate({
-        path: "cource",
-        select: "courceName",
+        path: "course",
+        select: "courseName",
       })
       .exec();
     return res.staus(200).json({
@@ -140,4 +140,4 @@ exports.getAllRating = async (req, res) => {
     });
   }
 };
-// TODO: cource id ke corresponding rating review leke aao
+// TODO: course id ke corresponding rating review leke aao

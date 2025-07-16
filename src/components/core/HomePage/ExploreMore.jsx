@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import HighlightText from "./HighlightText";
 import { HomePageExplore } from "../../../data/homepage-explore";
-import CourceCard from "./CourceCard";
+import CourseCard from "./CourseCard";
 
 const ExploreMore = () => {
   const tabs = [
@@ -12,15 +12,15 @@ const ExploreMore = () => {
     "Career paths",
   ];
   const [currentTab, setCurrentTab] = useState(tabs[0]);
-  const [cources, setCources] = useState(HomePageExplore[0].courses);
+  const [courses, setcourses] = useState(HomePageExplore[0].courses);
   const [currentCard, setcurrentCard] = useState(
     HomePageExplore[0].courses[0].heading
   );
 
   const setMyCards = (value) => {
     setCurrentTab(value);
-    const result = HomePageExplore.filter((cource) => cource.tag === value);
-    setCources(result[0].courses);
+    const result = HomePageExplore.filter((course) => course.tag === value);
+    setcourses(result[0].courses);
     setcurrentCard(result[0].courses[0].heading);
   };
 
@@ -57,8 +57,8 @@ const ExploreMore = () => {
 
       {/* Course Cards */}
       <div className="relative flex flex-wrap justify-center gap-6 lg:gap-10 w-full max-w-[95%] lg:max-w-[80%] mx-auto">
-        {cources.map((element, index) => (
-          <CourceCard
+        {courses.map((element, index) => (
+          <CourseCard
             key={index}
             cardData={element}
             currentCard={currentCard}

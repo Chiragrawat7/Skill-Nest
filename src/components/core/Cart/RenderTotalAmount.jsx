@@ -4,9 +4,9 @@ import IconBtn from '../../common/IconBtn'
 
 const RenderTotalAmount = () => {
   const {total,cart}=useSelector((state)=>state.cart)
-  const handleBuyCource=()=>{
-    const Cources=cart.map((Cource)=>Cource._id)
-    console.log("BOught Cources",Cources)
+  const handleBuycourse=()=>{
+    const courses=cart.map((course)=>course._id)
+    console.log("BOught courses",courses)
     // TODO: API integrate
   }
   return (
@@ -15,7 +15,7 @@ const RenderTotalAmount = () => {
         <p>Rs {total}</p>
         <IconBtn
         text='Buy Now'
-        onclick={handleBuyCource}
+        onclick={handleBuycourse}
         customClasses={'w-full justify-center'}
         />
     </div>

@@ -1,77 +1,66 @@
-import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
-import {getUserEnrolledCources} from '../../../services/operations/profileApi'
-import {ProgressBar} from '@ramonak/react-progress-bar'
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { getUserEnrolledcourses } from "../../../services/operations/profileApi";
+import { ProgressBar } from "@ramonak/react-progress-bar";
 
-const EnrolledCources = () => {
+const Enrolledcourses = () => {
+  const { token } = useSelector((state) => state.auth);
+  const [enrolledcourses, setEnrolledcourses] = useState(null);
 
-    const {token}=useSelector((state)=>state.auth)
-    const [enrolledCources,setEnrolledCources]=useState(null)
-
-    const getEnrolledCources=async()=>{
-        try {
-            const response=await getUserEnrolledCources(token)
-            console.log(response)
-            setEnrolledCources(response)
-        } catch (error) {
-            console.log("unable to fetch enrolled cources")
-        }
+  const getEnrolledcourses = async () => {
+    try {
+      const response = await getUserEnrolledcourses(token);
+      console.log(response);
+      setEnrolledcourses(response);
+    } catch (error) {
+      console.log("unable to fetch enrolled courses");
     }
-    useEffect(()=>{
-        getEnrolledCources();
-    },[])
-    
+  };
+  useEffect(() => {
+    getEnrolledcourses();
+  }, []);
+
   return (
-    <div>
+    <div className=" flex-1 overflow-auto bg-richblack-900">
+      <h2 className="text-3xl text-richblack-50">Enrolled courses</h2>
 
-        <h2>Enrolled Cources</h2>
-
-        {
-            !enrolledCources?(
-                <div>Loading...</div>
-            ):!enrolledCources.length?(
-                <div>You Have not Enrolled in any cource yet</div>
-            ):(
+      {!enrolledcourses ? (
+        <div>Loading...</div>
+      ) : !enrolledcourses.length ? (
+        <div>You Have not Enrolled in any course yet</div>
+      ) : (
+        <div>
+          <div>
+            <p>course Name</p>
+            <p>Durations</p>
+            <p>Progress</p>
+          </div>
+          {/* Cards */}
+          {enrolledcourses.map((course, index) => {
+            <div key={index}>
+              <div>
+                <img src={course.thumbnail} />
                 <div>
-                    <div>
-                        <p>Cource Name</p>
-                        <p>Durations</p>
-                        <p>Progress</p>
-                    </div>
-                    {/* Cards */}
-                    {
-                        enrolledCources.map((cource,index)=>{
-                            <div key={index}>
-                                <div>
-                                    <img src={cource.thumbnail}/>
-                                    <div>
-                                        <p>{cource.courceName}</p>
-                                        <p>{cource.courceDescription}</p>
-                                    </div>
-                                </div>
-                                <div>
-                                    {cource.totalDuration}
-                                </div>
-
-                                <div>
-                                    <p>Progress: {cource.progressPercentage||0}</p>
-                                    <ProgressBar
-                                    completed={cource.progressPercentage||0}
-                                    height='8px'
-                                    isLableVisible={false}
-                                    />
-                                </div>
-                                
-
-                            </div>
-                        })
-                    }
+                  <p>{course.courseName}</p>
+                  <p>{course.courseDescription}</p>
                 </div>
-            )
-        }
-        
-    </div>
-  )
-}
+              </div>
+              <div>{course.totalDuration}</div>
 
-export default EnrolledCources
+              <div>
+                <p>Progress: {course.progressPercentage || 0}%</p>
+                <ProgressBar
+                  completed={course.progressPercentage || 0}
+                  height="8px"
+                  isLableVisible={false}
+                />
+              </div>
+            </div>;
+          })}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default Enrolledcourses;

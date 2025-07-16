@@ -43,7 +43,7 @@ exports.showAllCategories = async (req, res) => {
     );
     return res.status(200).json({
       success: true,
-      allCategorys,
+      allCategories:allCategorys,
       message: "all Category returned successfully",
     });
   } catch (error) {
@@ -61,9 +61,9 @@ exports.categoryPageDetails = async (req, res) => {
     // get category id
     const { categoryId } = req.body;
 
-    // get cources for specified category id
+    // get courses for specified category id
     const selectedCategory = await Category.findById(categoryId)
-      .populate("cources")
+      .populate("courses")
       .exec();
 
     // validation
@@ -74,15 +74,15 @@ exports.categoryPageDetails = async (req, res) => {
       });
     }
 
-    // get cources for different categories
+    // get courses for different categories
     const differentCategories = await Category.findById({
       _id: { $ne: categoryId },
     })
-      .populate("cources")
+      .populate("courses")
       .exec();
 
-    // get top 10 selling cources
-    // TODO:top selling cources
+    // get top 10 selling courses
+    // TODO:top selling courses
 
     // return response
     return res.status(200).json({

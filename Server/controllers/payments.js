@@ -1,35 +1,35 @@
 const mongoose = require("mongoose");
 const { instance } = require("../config/razorpay");
-const Cource = require("../models/Cource");
+const course = require("../models/course");
 const User = require("../models/User");
 const { mailSender } = require("../utils/mailSender");
 
 // capture the payment and initiate the razorpay order
 exports.capturePayment = async (req, res) => {
   try {
-    // get cource id and user id
-    const { courceId } = req.body;
+    // get course id and user id
+    const { courseId } = req.body;
     const userId = req.user.id;
 
     // validation
-    if (!courceId) {
+    if (!courseId) {
       return res.json({
         success: false,
-        message: "please provide valid cource id",
+        message: "please provide valid course id",
       });
     }
-    let cource;
+    let course;
     try {
-      cource = await Cource.findById(courceId);
-      if (!cource) {
+      course = await course.findById(courseId);
+      if (!course) {
         return res.json({
           success: false,
-          message: "Could Not find the cource",
+          message: "Could Not find the course",
         });
       }
       // user already paid or not
       const uId = new mongoose.Types.ObjectId(userId);
-      if (Cource.studentsEnrolled.includes(uId)) {
+      if (course.studentsEnrolled.includes(uId)) {
         return res.status(200).json({
           success: false,
           message: "Student is already enrolled",
@@ -42,14 +42,14 @@ exports.capturePayment = async (req, res) => {
       });
     }
     // order create
-    let amount = cource.price;
+    let amount = course.price;
     const currency = "INR";
     const options = {
       amount: amount * 100,
       currency,
       receipt: Math.random(Date.now()).toString(),
       notes: {
-        courceId: courceId,
+        courseId: courseId,
         userId,
       },
     };
@@ -67,9 +67,9 @@ exports.capturePayment = async (req, res) => {
     // return response
     return res.status(200).josn({
       success: true,
-      courceName: cource.courceName,
-      courceDescription: cource.courceDescription,
-      thumbNail: cource.thumbNail,
+      courseName: course.courseName,
+      courseDescription: course.courseDescription,
+      thumbNail: course.thumbNail,
       orderId: paymentResponse.id,
       amount: paymentResponse.amount,
     });
@@ -93,12 +93,12 @@ exports.verifySignature = async (req, res) => {
   if (signature === digest) {
     console.log("payment is authorized");
 
-    // get userid and cource id
-    const { courceId, userId } = req.body.payload.payment.entity.notes;
+    // get userid and course id
+    const { courseId, userId } = req.body.payload.payment.entity.notes;
     try {
-      // find the cource and enroll the student in it
-      const enrolledCource = await Cource.findByIdAndUpdate(
-        { courceId },
+      // find the course and enroll the student in it
+      const enrolledcourse = await course.findByIdAndUpdate(
+        { courseId },
         {
           $push: {
             studentsEnrolled: userId,
@@ -108,19 +108,19 @@ exports.verifySignature = async (req, res) => {
           new: true,
         }
       );
-      if (!enrolledCource) {
+      if (!enrolledcourse) {
         return res.status(500).josn({
           success: false,
-          message: "Cource not found",
+          message: "course not found",
         });
       }
-      console.log(enrolledCource);
-      // find the student and update the cource
+      console.log(enrolledcourse);
+      // find the student and update the course
       const updatedStudent = await User.findByIdAndUpdate(
         { userId },
         {
           $push: {
-            cources: courceId,
+            courses: courseId,
           },
         },
         { new: true }
@@ -131,7 +131,7 @@ exports.verifySignature = async (req, res) => {
       const emailResponse = await mailSender(
         updatedStudent.email,
         "Congratulation - You are enrolled successfully",
-        `enrolled Successfully on ${enrolledCource.courceName}`
+        `enrolled Successfully on ${enrolledcourse.courseName}`
       );
 
       return res.status(200).json({
