@@ -33,8 +33,8 @@ const RequirmentField = ({
 
   return (
     <div>
-      <label htmlFor={name}>
-        {label} <sup>*</sup>
+      <label htmlFor={name} className="text-sm text-richblack-5">
+        {label} <sup className="text-pink-200">*</sup>
       </label>
       <div>
         <input
@@ -42,11 +42,11 @@ const RequirmentField = ({
           type="text"
           value={requirment}
           onChange={(e) => setRequirment(e.target.value)}
-          className="w-full"
+          className="form-style mt-2 text-white focus:outline-none bg-[#2c333f]  text-base leading-6 rounded-lg p-3 shadow-[0_0_0_#0000,0_0_0_#0000,0_1px_0_0_hsla(0,0%,100%,0.5)] w-full"
         />
         <button
           type="button"
-          className="font-semibold text-yellow-50"
+          className="font-semibold text-yellow-50 mt-3"
           onClick={handleAddRequirment}
         >
           Add

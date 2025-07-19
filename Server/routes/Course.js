@@ -1,7 +1,7 @@
 const express=require('express')
 const router=express.Router();
 
-const{createcourse,showAllcourses,getcourseDetails}=require('../controllers/course')
+const{createcourse,showAllcourses,getcourseDetails,editCourse}=require('../controllers/course')
 const {showAllCategories,createCategory,categoryPageDetails}=require('../controllers/category')
 const {createSection,updateSection,deleteSection}=require('../controllers/section')
 const {createSubSection,updateSubSection,deleteSubSection}=require('../controllers/subSection')
@@ -10,6 +10,7 @@ const {createRating,getAllRating,getAvgRating}=require('../controllers/ratingAnd
 const { route } = require('./User');
 
 router.post('/createCourse',auth,isInstructor,createcourse)
+router.put('/editCourse',auth,isInstructor,editCourse)
 
 router.post('/addSection',auth,isInstructor,createSection)
 router.put('/updateSection',auth,isInstructor,updateSection)

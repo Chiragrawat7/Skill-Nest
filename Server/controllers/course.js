@@ -1,4 +1,4 @@
-const course = require("../models/course");
+const Course = require("../models/course");
 const Category = require("../models/Category");
 const User = require("../models/User");
 const { uploadImageToCloudinary } = require("../utils/imageUploader");
@@ -70,7 +70,7 @@ exports.createcourse = async (req, res) => {
 
     console.log("yaha tk sb thik hai create course me");
     // create an entry for new course
-    const newcourse = await course.create({
+    const newcourse = await Course.create({
       courseName: courseName,
       courseDescription: courseDescription,
       instructor: instructorDetails._id,
@@ -120,7 +120,7 @@ exports.createcourse = async (req, res) => {
 // get all courses
 exports.showAllcourses = async (req, res) => {
   try {
-    const courses = await course.find(
+    const courses = await Course.find(
       {},
       {
         courseName: true,
@@ -154,7 +154,7 @@ exports.getcourseDetails = async (req, res) => {
     const { courseId } = req.body;
 
     // find course details
-    const courseDetails = await course.findById(courseId)
+    const courseDetails = await Course.findById(courseId)
       .populate({
         path: "instructor",
         populate: {
@@ -182,7 +182,7 @@ exports.getcourseDetails = async (req, res) => {
     if (!courseDetails) {
       return res.status(400).json({
         success: false,
-        message: `Could not find the course with ${courseid}`,
+        message: `Could not find the course with ${courseId}`,
       });
     }
     return res.status(200).json({
@@ -198,3 +198,71 @@ exports.getcourseDetails = async (req, res) => {
     });
   }
 };
+// Edit Cource
+exports.editCourse = async (req, res) => {
+  try {
+    const { courseId } = req.body
+    const updates = req.body
+    const course = await Course.findById(courseId)
+
+    if (!course) {
+      return res.status(404).json({ error: "Course not found" })
+    }
+
+    // If Thumbnail Image is found, update it
+    if (req.files) {
+      console.log("thumbnail update")
+      const thumbnail = req.files.thumbnailImage
+      const thumbnailImage = await uploadImageToCloudinary(
+        thumbnail,
+        process.env.FOLDER_NAME
+      )
+      course.thumbnail = thumbnailImage.secure_url
+    }
+
+    // Update only the fields that are present in the request body
+    for (const key in updates) {
+      if (updates.hasOwnProperty(key)) {
+        if (key === "tag" || key === "instructions") {
+          course[key] = JSON.parse(updates[key])
+        } else {
+          course[key] = updates[key]
+        }
+      }
+    }
+
+    await course.save()
+
+    const updatedCourse = await Course.findOne({
+      _id: courseId,
+    })
+      .populate({
+        path: "instructor",
+        populate: {
+          path: "additionalDetails",
+        },
+      })
+      .populate("category")
+      .populate("ratingAndReviews")
+      .populate({
+        path: "courseContent",
+        populate: {
+          path: "subSection",
+        },
+      })
+      .exec()
+
+    res.json({
+      success: true,
+      message: "Course updated successfully",
+      data: updatedCourse,
+    })
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      error: error.message,
+    })
+  }
+}
