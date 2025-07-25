@@ -9,7 +9,7 @@ import { MdArrowDropDown } from "react-icons/md";
 import {
   deleteSection,
   deleteSubSection,
-} from "../../../../../services/operations/courseDetailsApi";
+} from "../../../../../services/operations/courseDetailsAPI";
 import SubSectionModal from "./SubSectionModal";
 import { setCourse } from "../../../../../slices/courseSlice";
 
@@ -22,37 +22,49 @@ const NestedView = ({ handleChangeEditSectionName }) => {
   const [editSubSection, setEditSubSection] = useState(null);
   const [confirmationModal, setConfirmationModal] = useState(null);
   const handleDeleteSection = async (sectionId) => {
-    console.log("calling Delete Section",sectionId)
-    const result = await deleteSection({
-      sectionId,
-      courseId: course._id,
-    },token);
-    console.log("Deleting",result)
+    console.log("calling Delete Section", sectionId);
+    const result = await deleteSection(
+      {
+        sectionId,
+        courseId: course._id,
+      },
+      token
+    );
+    console.log("Deleting", result);
     if (result) {
       dispatch(setCourse(result));
     }
     setConfirmationModal(null);
   };
   const handleDeleteSubSection = async (subSectionId, sectionId) => {
-    const result = await deleteSubSection({ subSectionId, sectionId, token });
+    const result = await deleteSubSection({ subSectionId, sectionId }, token);
     if (result) {
-      dispatch(setCourse(result));
+      const updatedCouseContent = course.courseContent.map((section) =>
+        section._id === sectionId ? result : section
+      );
+      const updatedCourse = { ...course, courseContent: updatedCouseContent };
+      dispatch(setCourse(updatedCourse));
     }
     setConfirmationModal(null);
   };
   return (
     <div>
-      <div className="rounded-lg bg-richblack-700 p-6 px-8">
+      <div
+        className="rounded-lg bg-richblack-700 p-6 px-8"
+        id="nestedViewContainer"
+      >
         {course?.courseContent?.map((section) => (
           <details
             key={section._id}
             open
-            className="flex justify-between items-center gap-x-3 border-b-2"
+            // className="flex justify-between items-center gap-x-3 border-b-2"
           >
-            <summary className="flex items-center gap-x-3">
-              <div>
-                <RxDropdownMenu />
-                <p>{section.sectionName}</p>
+            <summary className="flex cursor-pointer items-center justify-between border-b-2 border-b-richblack-600 py-2">
+              <div className="flex items-center gap-x-3">
+                <RxDropdownMenu className="text-2xl text-richblack-50" />
+                <p className="font-semibold text-richblack-50">
+                  {section.sectionName}
+                </p>
               </div>
               <div className="flex items-center gap-x-3">
                 <button
@@ -63,7 +75,7 @@ const NestedView = ({ handleChangeEditSectionName }) => {
                     )
                   }
                 >
-                  <MdEdit />
+                  <MdEdit className="text-xl text-richblack-300" />
                 </button>
                 <button
                   onClick={() => {
@@ -77,33 +89,36 @@ const NestedView = ({ handleChangeEditSectionName }) => {
                     });
                   }}
                 >
-                  <MdOutlineDelete />
+                  <MdOutlineDelete className="text-xl text-richblack-300" />
                 </button>
-                <span></span>
-                <MdArrowDropDown className={``} />
+                <span className="font-medium text-richblack-300">|</span>
+                <MdArrowDropDown className="text-xl text-richblack-300" />
               </div>
             </summary>
-            <div>
-              {console.log("SubSection", section)}
-              {section?.subSections.map((data) => (
+            <div className="px-6 pb-4">
+              {section?.subSections.map((data, index) => (
                 <div
                   onClick={() => {
                     setViewSubSection(data);
                   }}
-                  key={data._id}
-                  className="flex items-center justify-between gap-x-3 border-b-2"
+                  key={data?._id || index}
+                  className="flex cursor-pointer items-center justify-between gap-x-3 border-b-2 border-b-richblack-600 py-2"
                 >
-                  <div>
-                    <RxDropdownMenu />
-                    <p>{data.title}</p>
+                  <div className="flex items-center gap-x-3 py-2 ">
+                    <RxDropdownMenu className="text-2xl text-richblack-50" />
+                    <p className="font-semibold text-richblack-50">
+                      {data.title}
+                    </p>
                   </div>
-                  <div className="flex items-center gap-x-3">
+                  <div className="flex items-center gap-x-3"
+                    onClick={(e)=>e.stopPropagation()}
+                  >
                     <button
                       onClick={() =>
                         setEditSubSection({ ...data, sectionId: section._id })
                       }
                     >
-                      <MdEdit />
+                      <MdEdit className="text-xl text-richblack-300" />
                     </button>
                     <button
                       onClick={() => {
@@ -112,18 +127,22 @@ const NestedView = ({ handleChangeEditSectionName }) => {
                           text2: "Selected Lecture Will Be Deleted",
                           btn1Text: "Delete",
                           btn2Text: "Cancel",
-                          btn1Handler: () => handleDeleteSubSection(data._id, section._id),
+                          btn1Handler: () =>
+                            handleDeleteSubSection(data._id, section._id),
                           btn2Handler: () => setConfirmationModal(null),
                         });
                       }}
                     >
-                      <MdOutlineDelete />
+                      <MdOutlineDelete className="text-xl text-richblack-300" />
                     </button>
                   </div>
                 </div>
               ))}
-              <button onClick={() => setAddSubSection(section._id)}>
-                <IoIosAddCircleOutline />
+              <button
+                className="mt-3 flex items-center gap-x-1 text-yellow-50"
+                onClick={() => setAddSubSection(section._id)}
+              >
+                <IoIosAddCircleOutline className="text-lg" />
                 <p>Add Lecture</p>
               </button>
             </div>

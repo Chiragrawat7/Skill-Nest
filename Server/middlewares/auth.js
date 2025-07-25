@@ -27,7 +27,7 @@ exports.auth=async (req,res,next) => {
             next();
 
         } catch (error) {
-            console.log("error in decoding token "+error);
+            console.log("error in decoding token "+error.message);
             return res.status(401).json({
                 success:false,
                 message:"token is invalid"

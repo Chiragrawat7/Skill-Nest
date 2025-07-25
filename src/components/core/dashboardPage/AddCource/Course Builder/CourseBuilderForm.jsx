@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { IoIosArrowForward } from "react-icons/io";
 import { setCourse, setEditCourse, setStep } from '../../../../../slices/courseSlice';
 import toast from 'react-hot-toast';
-import { createSection, updateSection } from '../../../../../services/operations/courseDetailsApi';
+import { createSection,updateSection } from '../../../../../services/operations/courseDetailsAPI';
 import NestedView from './NestedView';
 
 const CourseBuilderForm = () => {
@@ -32,7 +32,8 @@ const CourseBuilderForm = () => {
       toast.error("Please add atleast 1 Section")
       return;
     }
-    if(course.courseContent.some((section)=>section.subSection.length===0)){
+    console.log("Course Content",course.courseContent)
+    if(course.courseContent.some((section)=>section.subSections.length===0)){
        toast.error("Please add atleast 1 Lecture in each Section")
       return;
     }
@@ -71,26 +72,28 @@ const CourseBuilderForm = () => {
     setValue('sectionName',sectionName)
   }
   return (
-    <div className='text-3xl'>
-      <p>Course Builder</p>
+    <div className='space-y-8 rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-6'>
+      <p className='text-2xl font-semibold text-richblack-5'>Course Builder</p>
       <form
+      className='space-y-4'
       onSubmit={handleSubmit(onSubmitForm)}
       >
-        <div>
-          <label htmlFor='sectionName'>Section Name <sup>*</sup></label>
+        <div className='flex flex-col space-y-2'>
+          <label htmlFor='sectionName' className='text-sm text-richblack-5'>Section Name <sup className='text-pink-200'>*</sup></label>
           <input
             id='sectionName'
             placeholder='Add Section Name'
             {...register('sectionName',{required:true})}
-            className='w-full'
+            className='form-style mt-2 text-white focus:outline-none bg-[#2c333f]  text-base leading-6 rounded-lg p-3 shadow-[0_0_0_#0000,0_0_0_#0000,0_1px_0_0_hsla(0,0%,100%,0.5)] w-full
+'
           />
           {
             errors.sectionName&&(
-              <span>Section Name is Requires</span>
+              <span className='ml-2 text-xs tracking-wide text-pink-200'>Section Name is Requires</span>
             )
           }
         </div>
-        <div className='mt-10 flex justify-between'>
+        <div className='flex items-end gap-x-4'>
           <IconBtn
             type='submit'
             text={editSectionName?"Edit Section Name":"Create Section"}
@@ -113,9 +116,10 @@ const CourseBuilderForm = () => {
          <NestedView handleChangeEditSectionName={handleChangeEditSectionName}/>
       )
      }
+     {/* Next Previous Button */}
      <div className='flex justify-end gap-x-3'>
       <button onClick={goBack}
-        className='rounded-md cursor-pointer flex items-center'>
+        className={`flex cursor-pointer items-center gap-x-2 rounded-md bg-richblack-300 py-[8px] px-[20px] font-semibold text-richblack-900`}>
         Back
       </button>
       <IconBtn text={'Next'} onclick={gotoNext}><IoIosArrowForward /></IconBtn>

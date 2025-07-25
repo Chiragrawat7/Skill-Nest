@@ -109,6 +109,7 @@ export const addCourseDetails = async (data, token) => {
 export const editCourseDetails = async (data, token) => {
   let result = null;
   const toastId = toast.loading("Loading...");
+  console.log("course data",data)
   try {
     const response = await apiConnector("PUT", EDIT_COURSE_API, data, {
       "Content-Type": "multipart/form-data",
