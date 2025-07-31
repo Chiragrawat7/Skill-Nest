@@ -55,11 +55,16 @@ const Navbar = () => {
                   <div className="hover:cursor-pointer flex items-center gap-1 group relative">
                     <p>{link.title}</p>
                     <IoIosArrowDropdownCircle className="group-hover:-rotate-180 transition-all duration-200" />
-                    <div className="invisible absolute left-[50%] top-[50%] flex flex-col rounded-md bg-richblack-5 p-4 z-10 text-richblack-900 opacity-0 transition-all duration-200 group-hover:visible group-hover:opacity-100 lg:w-[300px] translate-x-[-50%] translate-y-[50%] ">
+                    <div className="invisible absolute left-[50%] top-[50%] flex flex-col rounded-md bg-richblack-5 p-4 z-10 text-richblack-900 opacity-0 transition-all duration-200 group-hover:visible group-hover:opacity-100 lg:w-[300px] translate-x-[-50%] translate-y-[10%] ">
                       <div className="absolute left-[50%] top-0 h-6 rotate-45 rounded bg-richblack-5 w-6 translate-x-[70%] translate-y-[-45%]"></div>
                       {subLinks.length ? (
                         subLinks.map((sublink, index) => (
-                          <Link to={sublink.name.replace(" ", "-")} key={index}>
+                           <Link
+                            className="p-3 hover:bg-gray-300 rounded-md"
+                            to={`/catalog/${sublink.name.split(" ")
+                                    .join("-")
+                                    .toLowerCase()}`} 
+                          key={index}>
                             {sublink.name}
                           </Link>
                         ))

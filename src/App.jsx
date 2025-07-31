@@ -23,6 +23,7 @@ import Settings from "./components/core/dashboardPage/Settings/Settings";
 import Addcourse from './components/core/dashboardPage/AddCource/index'
 import MyCourses from "./components/core/dashboardPage/MyCourses";
 import EditCourse from './components/core/dashboardPage/Edit Course/index'
+import Catalog from "./pages/Catalog";
 
 
 const App = () => {
@@ -33,6 +34,14 @@ const App = () => {
 
       <Routes>
         <Route path="/" element={<Home />} />
+         <Route
+          path="/catalog/:catalogName"
+          element={
+            // <OpenRoute>
+              <Catalog />
+            // </OpenRoute>
+          }
+        />
         <Route
           path="/login"
           element={
@@ -115,6 +124,7 @@ const App = () => {
         </Route>
         <Route path="/contact" element={<Contact />} />
         <Route path="*" element={<Error />} />
+    
       </Routes>
     </div>
   );

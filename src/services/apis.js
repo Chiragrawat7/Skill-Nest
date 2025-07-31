@@ -5,7 +5,7 @@ const courseRoutes=BASE_URL+'/course';
 const paymentRoutes=BASE_URL+'/payment'
 
 export const categories={
-    CATEGORIES_API: BASE_URL + "/course/showAllCategories",
+    CATEGORIES_API: courseRoutes + "/showAllCategories",
 }
 export const endpoints={
     SEND_OTP:userRoutes+'/sendotp',
@@ -48,5 +48,10 @@ export const courseEndpoints = {
     courseRoutes + "/getFullCourseDetails",
   LECTURE_COMPLETION_API: courseRoutes + "/updateCourseProgress",
   CREATE_RATING_API: courseRoutes + "/createRating",
+}
+
+// CATALOG PAGE DATA
+export const catalogData = {
+  CATALOGPAGEDATA_API: courseRoutes + "/getCategoryPageDetails",
 }
  
