@@ -17,6 +17,14 @@ export const endpoints={
 export const contactusEndpoint = {
   CONTACT_US_API: BASE_URL + "/reach/contact",
 }
+
+// STUDENTS ENDPOINTS
+export const studentEndpoints = {
+  COURSE_PAYMENT_API: paymentRoutes + "/capturePayment",
+  COURSE_VERIFY_API: paymentRoutes + "/verifyPayment",
+  SEND_PAYMENT_SUCCESS_EMAIL_API: paymentRoutes + "/sendPaymentSuccessEmail",
+}
+
 // PROFILE ENDPOINTS
 export const profileEndpoints = {
   GET_USER_DETAILS_API: BASE_URL + "/profile/getUserDetails",

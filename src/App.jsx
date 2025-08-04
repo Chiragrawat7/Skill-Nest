@@ -20,11 +20,11 @@ import Cart from "./components/core/Cart";
 import { ACCOUNT_TYPE } from "./utils/constants";
 import { useSelector } from "react-redux";
 import Settings from "./components/core/dashboardPage/Settings/Settings";
-import Addcourse from './components/core/dashboardPage/AddCource/index'
+import Addcourse from "./components/core/dashboardPage/AddCource/index";
 import MyCourses from "./components/core/dashboardPage/MyCourses";
-import EditCourse from './components/core/dashboardPage/Edit Course/index'
+import EditCourse from "./components/core/dashboardPage/Edit Course/index";
 import Catalog from "./pages/Catalog";
-
+import CourseDetails from "./pages/CourseDetails";
 
 const App = () => {
   const { user } = useSelector((state) => state.profile);
@@ -34,14 +34,8 @@ const App = () => {
 
       <Routes>
         <Route path="/" element={<Home />} />
-         <Route
-          path="/catalog/:catalogName"
-          element={
-            // <OpenRoute>
-              <Catalog />
-            // </OpenRoute>
-          }
-        />
+        <Route path="/catalog/:catalogName" element={<Catalog />} />
+         <Route path="/courses/:courseId" element={<CourseDetails />} />
         <Route
           path="/login"
           element={
@@ -99,8 +93,7 @@ const App = () => {
             }
           />
           <Route path="dashboard/settings" element={<Settings />} />
-          {
-          user?.accountType === ACCOUNT_TYPE.STUDENT && (
+          {user?.accountType === ACCOUNT_TYPE.STUDENT && (
             <>
               <Route
                 path="/dashboard/enrolled-courses"
@@ -110,21 +103,19 @@ const App = () => {
             </>
           )}
 
-           {
-           user?.accountType === ACCOUNT_TYPE.INSTRUCTOR && (
+          {user?.accountType === ACCOUNT_TYPE.INSTRUCTOR && (
             <>
-              <Route path="/dashboard/add-course" element={<Addcourse/>}/>
-              <Route path="dashboard/my-courses" element={<MyCourses/>}/>
-              <Route path="dashboard/edit-course/:courseId" element={<EditCourse/>}/>
-
+              <Route path="/dashboard/add-course" element={<Addcourse />} />
+              <Route path="dashboard/my-courses" element={<MyCourses />} />
+              <Route
+                path="dashboard/edit-course/:courseId"
+                element={<EditCourse />}
+              />
             </>
           )}
-
-          
         </Route>
         <Route path="/contact" element={<Contact />} />
         <Route path="*" element={<Error />} />
-    
       </Routes>
     </div>
   );
