@@ -34,6 +34,7 @@ export async function buyCourse(
   dispatch,
 ) {
   const toastId = toast.loading("Loading...");
+  console.log("token",token)
   try {
     // load the script
     
@@ -92,7 +93,7 @@ export async function buyCourse(
     // toast.dismiss(toastId)
   } catch (error) {
     console.log("PAYMENT API ERROR", error);
-    toast.error("Could not make Payment");
+    toast.error(error.message);
   }
   toast.dismiss(toastId);
 

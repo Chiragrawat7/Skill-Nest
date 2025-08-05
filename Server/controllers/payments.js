@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
 const { instance } = require("../config/razorpay");
 const Course = require("../models/course");
+const {paymentSuccessEmail}=require('../mails/templates/paymentSuccessEmail');
 const User = require("../models/User");
-const {
-  courseEnrolledEmail,
-} = require("../mails/templates/courseEnrollmentEmail");
+const crypto=require('crypto')
+const {courseEnrollmentEmail} = require("../mails/templates/courseEnrollmentEmail");
 const { mailSender } = require("../utils/mailSender");
 
 exports.capturePayment = async (req, res) => {
@@ -73,7 +73,7 @@ exports.capturePayment = async (req, res) => {
     });
   }
 };
-exports.verifyPayment = async (req, response) => {
+exports.verifyPayment = async (req, res) => {
   try {
     const razorpay_order_id = req.body.razorpay_order_id;
     const razorpay_payment_id = req.body.razorpay_payment_id;
@@ -153,7 +153,7 @@ const enrollStudents = async (courses, userId, res) => {
       const emailResponse = await mailSender(
         enrolledStudent.email,
         `Successfully Enrolled into ${enrolledcourse.courseName}`,
-        courseEnrolledEmail(
+        courseEnrollmentEmail(
           enrolledcourse.courseName,
           `${enrolledStudent.firstName}`
         )
@@ -319,8 +319,8 @@ const enrollStudents = async (courses, userId, res) => {
 // };
 exports.sendPaymentSuccessEmail = async (req, res) => {
   const { orderId, paymentId, amount } = req.body;
-  const userid = req.user.id;
-  if (!orderId || !paymentId || !amount || !userid) {
+  const userId = req.user.id;
+  if (!orderId || !paymentId || !amount || !userId) {
     return res.status(400).josn({
       success: false,
       message: "please provide all details",
@@ -332,16 +332,14 @@ exports.sendPaymentSuccessEmail = async (req, res) => {
     await mailSender(
       enrolledStudent.email,
       `Payment Received`,
-      paymentSuccessEmail(`${enrolledStudent.firstName}`),
-      amount/100,orderId,paymentId
+      paymentSuccessEmail(`${enrolledStudent.firstName}`,
+      amount/100,orderId,paymentId)
     )
   } catch (error) {
-    console.log("Error in Sending mail")
+    console.log("Error in Sending mail",error)
     return res.status(500).json({
       success:false,
       message:"Could Not Send email"
     })
   }
-
-
 };

@@ -8,7 +8,7 @@ const {auth,isStudent,isInstructor,isAdmin}=require('../middlewares/auth')
 router.post('/capturePayment',auth,isStudent,capturePayment);
 router.post('/sendPaymentSuccessEmail',auth,sendPaymentSuccessEmail)
 
-router.post('/verifySignature',auth,isStudent,verifyPayment);
+router.post('/verifyPayment',auth,isStudent,verifyPayment);
 
 
 module.exports=router;

@@ -26,7 +26,7 @@ router.get("/showAllCategories",showAllCategories)
 router.post("/getCategoryPageDetails",categoryPageDetails)
 
 router.post('/getAllcourses',auth,isInstructor,showAllcourses)
-router.get('/getcourseDetails',auth,isInstructor,getcourseDetails)
+router.post('/getCourseDetails',auth,getcourseDetails)
 router.get("/getInstructorCourses", auth, isInstructor, getInstructorCourses)
 router.post("/getFullCourseDetails", auth, getFullCourseDetails)
 
