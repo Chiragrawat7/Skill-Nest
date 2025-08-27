@@ -65,7 +65,6 @@ export const fetchCourseDetails = async (token, courseId) => {
   return result;
 };
 
-
 // fetching the available course categories
 export const fetchCourseCategories = async () => {
   let result = [];

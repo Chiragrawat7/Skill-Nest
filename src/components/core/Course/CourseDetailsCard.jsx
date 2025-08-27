@@ -77,11 +77,14 @@ function CourseDetailsCard({ course, setConfirmationModal, handleBuyCourse }) {
                 ? "Go To Course"
                 : "Buy Now"}
             </button>
-            {(!user || !course?.studentsEnrolled.includes(user?._id)) && (
+            {(user && !course?.studentsEnrolled.includes(user?._id)) && (
               <button onClick={handleAddToCart} className="blackButton">
                 Add to Cart
               </button>
             )}
+            {
+              console.log("user",user)
+            }
           </div>
           <div>
             <p className="pb-3 pt-6 text-center text-sm text-richblack-25">
@@ -94,9 +97,9 @@ function CourseDetailsCard({ course, setConfirmationModal, handleBuyCourse }) {
               This Course Includes : {course?.courseDescription}
             </p>
             <div className="flex flex-col gap-3 text-sm text-caribbeangreen-100">
-              {course?.instructions?.map((item, i) => {
+              {course?.tags?.map((item, index) => {
                 return (
-                  <p className={`flex gap-2`} key={i}>
+                  <p className={`flex gap-2`} key={index}>
                     <BsFillCaretRightFill />
                     <span>{item}</span>
                   </p>

@@ -93,12 +93,12 @@ const Navbar = () => {
 
         {/* login/signup/dashboard */}
 
-        <div className="flex gap-3">
+        <div className="flex gap-5">
           {
           user && user.accountType != ACCOUNT_TYPE.INSTRUCTOR && (
-            <Link to={"/dashboard/cart"} className="relative">
-              <AiOutlineShoppingCart />
-              {totalItems > 0 && <span>{totalItems}</span>}
+            <Link to={"/dashboard/cart"} className="relative flex items-center justify-center text-white">
+              <AiOutlineShoppingCart className=" text-2xl"/>
+              {totalItems > 0 && <span className="absolute -top-2 -right-1.5 font-bold">{totalItems}</span>}
             </Link>
           )}
           {

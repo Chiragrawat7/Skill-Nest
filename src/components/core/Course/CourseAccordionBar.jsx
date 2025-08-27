@@ -21,7 +21,6 @@ export default function CourseAccordionBar({ course, isActive, handleActive }) {
 
   // Use subSections array safely (note plural)
   const subSectionsArray = Array.isArray(course?.subSections) ? course.subSections : [];
-
   return (
     <div className="overflow-hidden border border-solid border-richblack-600 bg-richblack-700 text-richblack-5 last:mb-0">
       <div>

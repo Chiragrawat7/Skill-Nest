@@ -27,6 +27,7 @@ function CourseDetails() {
 
   const [response, setResponse] = useState(null);
   const [confirmationModal, setConfirmationModal] = useState(null);
+  const [avgReviewCount, setAvgReviewCount] = useState(0);
 
   useEffect(() => {
     (async () => {
@@ -39,7 +40,6 @@ function CourseDetails() {
     })();
   }, [courseId, token]);
 
-  const [avgReviewCount, setAvgReviewCount] = useState(0);
   useEffect(() => {
     const count = GetAvgRating(response?.data?.ratingAndReviews);
     setAvgReviewCount(count);
@@ -62,7 +62,9 @@ function CourseDetails() {
     let durationSum = 0;
 
     response?.data?.courseContent?.forEach((section) => {
-      const subSecs = Array.isArray(section.subSections) ? section.subSections : [];
+      const subSecs = Array.isArray(section.subSections)
+        ? section.subSections
+        : [];
       lectures += subSecs.length;
       subSecs.forEach((sub) => {
         const dur = Number(sub.timeDuration);
@@ -140,7 +142,9 @@ function CourseDetails() {
                 className="aspect-auto w-full"
               />
             </div>
-            <div className={`z-30 my-5 flex flex-col justify-center gap-4 py-5 text-lg text-richblack-5`}>
+            <div
+              className={`z-30 my-5 flex flex-col justify-center gap-4 py-5 text-lg text-richblack-5`}
+            >
               <div>
                 <p className="text-4xl font-bold text-richblack-5 sm:text-[42px]">
                   {courseName}
@@ -148,13 +152,18 @@ function CourseDetails() {
               </div>
               <p className={`text-richblack-200`}>{courseDescription}</p>
               <div className="text-md flex flex-wrap items-center gap-2">
-                <span>{!isNaN(totalDuration) ? totalDuration.toFixed(2) : "0.00"} total length</span>
+                <span>
+                  {!isNaN(totalDuration) ? totalDuration.toFixed(2) : "0.00"}{" "}
+                  total length
+                </span>
                 <RatingStars Review_Count={avgReviewCount} Star_Size={24} />
                 <span>{`(${ratingAndReviews.length} reviews)`}</span>
                 <span>{`${studentsEnrolled.length} students enrolled`}</span>
               </div>
               <div>
-                <p>Created By {`${instructor.firstName} ${instructor.lastName}`}</p>
+                <p>
+                  Created By {`${instructor.firstName} ${instructor.lastName}`}
+                </p>
               </div>
               <div className="flex flex-wrap gap-5 text-lg">
                 <p className="flex items-center gap-2">
