@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form'
 import { useSelector } from 'react-redux'
 import ReactStars from "react-rating-stars-component";
 import IconBtn from '../../common/IconBtn';
-import { createRating } from '../../../services/operations/courseDetailsAPI';
+import { createRating } from '../../../services/operations/courseDetailsApi';
 const CourseReviewModal = ({setReviewModal}) => {
     const {user}=useSelector((state)=>state.profile)
     const {token}=useSelector((state)=>state.auth)
@@ -22,7 +22,7 @@ const CourseReviewModal = ({setReviewModal}) => {
         register,
         handleSubmit,
         setValue,
-        forsmState:{errors},
+        formState:{errors},
     }=useForm();
     useEffect(()=>{
         setValue("courseExperience","")

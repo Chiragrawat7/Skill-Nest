@@ -187,14 +187,15 @@ const VideoDetails = () => {
                 <IconBtn
                   disabled={loading}
                   text={!loading ? "Mark Lecture as Completed" : "Loading..."}
-                  onClick={handleLectureCompletion}
+                  onclick={handleLectureCompletion}
                 />
               )}
               <IconBtn
                 disabled={loading}
                 text="Rewatch"
                 customClasses="text-xl"
-                onClick={() => {
+                onclick={() => {
+                  console.log("Rewatch clicked")
                   if (playerRef?.current) {
                     playerRef.current.seek(0);
                     setVideoEnded(false);

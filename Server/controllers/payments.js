@@ -6,6 +6,8 @@ const User = require("../models/User");
 const crypto=require('crypto')
 const {courseEnrollmentEmail} = require("../mails/templates/courseEnrollmentEmail");
 const { mailSender } = require("../utils/mailSender");
+const CourseProgress =require('../models/CourceProgress')
+
 
 exports.capturePayment = async (req, res) => {
   try {
@@ -141,11 +143,22 @@ const enrollStudents = async (courses, userId, res) => {
           message: "course not Found",
         });
       }
+
+
+      const courseProgress=await CourseProgress.create({
+        courseId:courseId,
+        userId:userId,
+        completedVideos:[],
+      })
+      
+      
+      
       const enrolledStudent = await User.findByIdAndUpdate(
         userId,
         {
           $push: {
             courses: courseId,
+            courseProgress:courseProgress._id,
           },
         },
         { new: true }

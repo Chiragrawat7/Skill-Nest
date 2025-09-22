@@ -7,8 +7,7 @@ const {createSection,updateSection,deleteSection}=require('../controllers/sectio
 const {createSubSection,updateSubSection,deleteSubSection}=require('../controllers/subSection')
 const {auth,isStudent,isInstructor,isAdmin}=require('../middlewares/auth')
 const {createRating,getAllRating,getAvgRating}=require('../controllers/ratingAndReview');
-const { route } = require('./User');
-
+const {updateCourseProgress}=require('../controllers/courseProgress')
 router.post('/createCourse',auth,isInstructor,createcourse)
 router.put('/editCourse',auth,isInstructor,editCourse)
 router.delete("/deleteCourse", deleteCourse)
@@ -16,6 +15,7 @@ router.delete("/deleteCourse", deleteCourse)
 router.post('/addSection',auth,isInstructor,createSection)
 router.put('/updateSection',auth,isInstructor,updateSection)
 router.post('/deleteSection',auth,isInstructor,deleteSection)
+router.post("/updateCourseProgress",auth,isStudent,updateCourseProgress)
 
 router.post('/addSubSection',auth,isInstructor,createSubSection)
 router.post('/updateSubSection',auth,isInstructor,updateSubSection)
